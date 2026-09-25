@@ -1,8 +1,14 @@
-interface IDIoBank {
-    login: boolean;
+export interface IUser {
+    name: string;
+    email: string;
 }
 
-const dioBank = {
+interface IDIoBank {
+    login: boolean;
+    user?: IUser;
+}
+
+const dioBank: IDIoBank = {
     login: false
 }
 

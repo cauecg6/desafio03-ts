@@ -1,16 +1,14 @@
 import { Box, Button, Center, Flex, Spacer, Text } from '@chakra-ui/react'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { changeLocalStorage } from '../services/storage'
 import { AppContext } from './AppContext'
 
 export const Header  = () => {
-  const { isLoggedIn, setIsLoggedIn } = useContext(AppContext)
+  const { isLoggedIn, signOut } = useContext(AppContext)
   const navigate = useNavigate()
 
   const logout = () => {
-    changeLocalStorage({ login: false})
-    setIsLoggedIn(false)
+    signOut()
     navigate('/')
   }
 
@@ -25,6 +23,18 @@ export const Header  = () => {
         isLoggedIn && (
           <>
             <Spacer />
+            <Button
+              marginRight='10px'
+              onClick={() => navigate('/conta/1')}
+            >
+              Conta
+            </Button>
+            <Button
+              marginRight='10px'
+              onClick={() => navigate('/infoconta')}
+            >
+              Meus dados
+            </Button>
             <Button
               onClick={() => logout()}
             >

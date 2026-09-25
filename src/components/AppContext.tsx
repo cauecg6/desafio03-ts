@@ -1,31 +1,41 @@
-import { createContext, useEffect, useState } from "react"
-import { getAllLocalStorage } from "../services/storage"
+import { createContext, useState } from "react"
+import { changeLocalStorage, getAllLocalStorage, IUser } from "../services/storage"
 
 interface IAppContext {
-    user: string,
+    user: IUser | null,
     isLoggedIn: boolean,
-    setIsLoggedIn: (isLoggedIn: boolean) => void
+    signIn: (user: IUser) => void,
+    signOut: () => void
 }
-  
+
 export const AppContext = createContext({} as IAppContext)
-  
+
+// Lê o localStorage uma única vez, na criação do contexto, para já iniciar
+// o estado (isLoggedIn/user) com os dados salvos de uma sessão anterior.
+const storage = getAllLocalStorage()
+const storedData = storage ? JSON.parse(storage) : null
+
 export const AppContextProvider = ({ children }: any) => {
-    const [ isLoggedIn, setIsLoggedIn ] = useState<boolean>(false)
+    const [ isLoggedIn, setIsLoggedIn ] = useState<boolean>(storedData?.login ?? false)
+    const [ user, setUser ] = useState<IUser | null>(storedData?.user ?? null)
 
-    const storage = getAllLocalStorage()
+    // Salva o usuário logado no localStorage (sem a senha) e atualiza o contexto
+    const signIn = (loggedUser: IUser) => {
+        setUser(loggedUser)
+        setIsLoggedIn(true)
+        changeLocalStorage({ login: true, user: loggedUser })
+    }
 
-    useEffect(() => {
-      if(storage){
-        const { login } = JSON.parse(storage)
-        setIsLoggedIn(login)
-      }
-    }, [])
+    // Limpa o contexto e o localStorage
+    const signOut = () => {
+        setUser(null)
+        setIsLoggedIn(false)
+        changeLocalStorage({ login: false })
+    }
 
-    const user = 'nathally'
-  
     return (
-      <AppContext.Provider value={{ user, isLoggedIn, setIsLoggedIn }}>
-        { children }
-      </AppContext.Provider>
+        <AppContext.Provider value={{ user, isLoggedIn, signIn, signOut }}>
+            { children }
+        </AppContext.Provider>
     )
 }
