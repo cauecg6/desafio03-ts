@@ -4,7 +4,7 @@ Projeto desenvolvido como parte do Desafio de Projeto "Dio Bank" da [DIO](https:
 
 Baseado no projeto original de [Nathally Souza](https://github.com/nathyts).
 
-🔗 **Deploy:** [ ]
+🔗 **Deploy:** [dapper-lebkuchen-f2fd65.netlify.app](https://dapper-lebkuchen-f2fd65.netlify.app)
 
 ## Tecnologias
 
