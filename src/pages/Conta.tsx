@@ -20,7 +20,11 @@ const Conta = () => {
 
     const { isLoggedIn } = useContext(AppContext)
 
-    !isLoggedIn && navigate('/')
+    useEffect(() => {
+        if(!isLoggedIn) {
+            navigate('/')
+        }
+    }, [isLoggedIn, navigate])
 
     useEffect(() => {
         const getData = async () => {
